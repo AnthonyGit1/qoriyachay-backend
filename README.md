@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Qoriyachay Logo](https://via.placeholder.com/150x150)
+![Qoriyachay Logo](assets/logo.png)
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app)
 ![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)
@@ -49,7 +49,7 @@ Qoriyachay es una API de recomendación inteligente que utiliza procesamiento de
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/TuUsuario/qoriyachay-backend.git
+git clone https://github.com/AnthonyGit1/qoriyachay-backend.git
 
 # Entrar al directorio
 cd qoriyachay-backend
@@ -91,7 +91,7 @@ npm start
 
 ### Estudiantes
 
-```https
+```http
 # Crear estudiante y obtener recomendación
 POST /api/students
 
@@ -117,12 +117,35 @@ POST /api/students
 
 ### Rutas de Aprendizaje
 
-```https
+```http
 # Obtener todas las rutas
 GET /api/learning-paths
 
 # Crear nueva ruta
 POST /api/learning-paths
+
+# Request Body
+{
+    "nombre_ruta": "String",
+    "descripcion": "String",
+    "carrera": "String",
+    "modulos": [{
+        "nombre": "String",
+        "orden": Number,
+        "duracion_estimada": "String",
+        "contenido": [{
+            "tipo": "String",
+            "titulo": "String",
+            "descripcion": "String",
+            "url_recurso": "String",
+            "tiempo_estimado": Number
+        }]
+    }],
+    "metadata_ia": {
+        "tags": ["String"],
+        "carreras_relacionadas": ["String"]
+    }
+}
 ```
 
 ## 🛠️ Tecnologías
