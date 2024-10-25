@@ -24,7 +24,6 @@
 - [Tecnologías](#-tecnologías)
 - [Despliegue](#-despliegue)
 - [Contribución](#-contribución)
-- [Licencia](#-licencia)
 
 ## 🎯 Descripción General
 
@@ -92,7 +91,7 @@ npm start
 
 ### Estudiantes
 
-```http
+```https
 # Crear estudiante y obtener recomendación
 POST /api/students
 
@@ -118,7 +117,7 @@ POST /api/students
 
 ### Rutas de Aprendizaje
 
-```http
+```https
 # Obtener todas las rutas
 GET /api/learning-paths
 
@@ -157,17 +156,6 @@ git push origin main
 3. Commit tus cambios (`git commit -m 'Add: nueva característica'`)
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
-
-## 📞 Soporte
-
-Si tienes alguna pregunta o problema:
-- 📧 Email: tu@email.com
-- 🐛 [Reportar un bug](https://github.com/tuusuario/qoriyachay-backend/issues)
-- 💡 [Solicitar una feature](https://github.com/tuusuario/qoriyachay-backend/issues)
 
 ---
 <div align="center">
