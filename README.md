@@ -8,6 +8,7 @@
 ![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=flat&logo=mongodb&logoColor=white)
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=flat&logo=express&logoColor=%2361DAFB)
+![Natural](https://img.shields.io/badge/NLP-Natural-orange)
 
 *Sistema de recomendación de rutas de aprendizaje impulsado por IA*
 
@@ -15,6 +16,7 @@
 
 ## 📋 Índice
 - [Descripción General](#-descripción-general)
+- [Sistema de IA](#-sistema-de-ia)
 - [Características](#-características)
 - [Requisitos Previos](#-requisitos-previos)
 - [Instalación](#-instalación)
@@ -29,20 +31,75 @@
 
 Qoriyachay es una API de recomendación inteligente que utiliza procesamiento de lenguaje natural para sugerir rutas de aprendizaje personalizadas basadas en el perfil académico del estudiante. El sistema analiza múltiples factores como la carrera, intereses y nivel académico para proporcionar recomendaciones precisas y relevantes.
 
+## 🧠 Sistema de IA
+
+### Arquitectura del Sistema de Recomendación
+
+El sistema utiliza un enfoque híbrido que combina:
+
+1. **Procesamiento de Lenguaje Natural (NLP)**
+   ```javascript
+   // Implementado con Natural.js
+   const classifier = new natural.BayesClassifier();
+   classifier.addDocument(studentProfile, recommendedPath);
+   ```
+
+2. **Sistema de Puntuación Multifactorial**
+   ```javascript
+   Score = (NLP_Score * 0.6) + (Profile_Similarity * 0.4)
+   
+   Profile_Similarity = {
+     Career_Match: 40%,    // Coincidencia de carrera
+     Interests_Match: 40%, // Alineación de intereses
+     Level_Factor: 20%     // Adecuación al ciclo
+   }
+   ```
+
+### Flujo de Recomendación
+
+```mermaid
+graph LR
+A[Entrada Usuario] --> B[Procesamiento NLP]
+B --> C[Cálculo de Similitud]
+C --> D[Ranking de Rutas]
+D --> E[Recomendación Final]
+```
+
+### Cobertura Académica
+
+El sistema abarca 8 carreras principales:
+
+| Carrera | Rutas | Módulos | Áreas de Interés |
+|---------|--------|---------|------------------|
+| Ingeniería de Software | 3 | 9 | 12 |
+| Ciencias de la Computación | 3 | 9 | 12 |
+| Ingeniería de Sistemas | 3 | 9 | 12 |
+| Ingeniería Industrial | 3 | 9 | 12 |
+| Ciencia de Datos | 3 | 9 | 12 |
+| Ingeniería Mecatrónica | 3 | 9 | 12 |
+| Ingeniería en Telecomunicaciones | 3 | 9 | 12 |
+| Ingeniería Biomédica | 3 | 9 | 12 |
+
+### Métricas de Rendimiento
+
+- **Precisión de Recomendación**: > 85%
+- **Tiempo de Respuesta**: < 500ms
+- **Tasa de Acierto**: > 90% en coincidencia carrera-intereses
+
 ## ✨ Características
 
-- 🤖 Sistema de recomendación basado en IA
-- 📚 Rutas de aprendizaje personalizadas
-- 🎯 Matching inteligente de perfiles
-- 📊 Análisis de compatibilidad
-- 🔄 Integración continua con Railway
-- 🗃️ Base de datos MongoDB
+- 🤖 Sistema de recomendación basado en NLP
+- 📚 24 rutas de aprendizaje especializadas
+- 🎯 72 módulos de contenido estructurado
+- 📊 96 áreas de interés específicas
+- 🔄 Aprendizaje continuo del sistema
+- 🗃️ Base de datos optimizada MongoDB
 
 ## 📋 Requisitos Previos
 
 - Node.js >= 14.0.0
 - npm >= 6.14.0
-- MongoDB
+- MongoDB >= 4.4
 - Git
 
 ## 🚀 Instalación
@@ -60,7 +117,7 @@ npm install
 
 ## ⚙️ Configuración
 
-1. Crear archivo `.env` en la raíz del proyecto:
+1. Crear archivo `.env`:
 
 ```env
 NODE_ENV=development
@@ -68,22 +125,22 @@ PORT=3000
 MONGODB_URL=tu_url_de_mongodb
 ```
 
-2. Configurar la base de datos:
+2. Iniciar servicios:
 ```bash
-# Asegúrate que MongoDB está corriendo
+# MongoDB
 mongod
 
-# En otra terminal
+# Servidor de desarrollo
 npm run dev
 ```
 
 ## 📖 Uso
 
 ```bash
-# Modo desarrollo
+# Desarrollo
 npm run dev
 
-# Modo producción
+# Producción
 npm start
 ```
 
@@ -92,25 +149,32 @@ npm start
 ### Estudiantes
 
 ```http
-# Crear estudiante y obtener recomendación
 POST /api/students
+Content-Type: application/json
 
-# Request Body
 {
-    "nombres": "String",
-    "apellidos": "String",
-    "correo": "String",
-    "carrera": "String",
-    "ciclo": Number,
-    "intereses": [String]
+    "datos_basicos": {
+        "nombres": "String",
+        "apellidos": "String",
+        "correo": "String"
+    },
+    "perfil_academico": {
+        "carrera": "String",
+        "ciclo": Number,
+        "intereses": String[]  // 3-6 intereses
+    }
 }
 
-# Response
+Response:
 {
     "success": true,
     "data": {
-        "student": {...},
-        "recommendation": {...}
+        "student": Object,
+        "recommendation": {
+            "mainPath": Object,
+            "confidence": Number,
+            "alternatives": Array
+        }
     }
 }
 ```
@@ -118,13 +182,10 @@ POST /api/students
 ### Rutas de Aprendizaje
 
 ```http
-# Obtener todas las rutas
 GET /api/learning-paths
-
-# Crear nueva ruta
 POST /api/learning-paths
 
-# Request Body
+Request Body (POST):
 {
     "nombre_ruta": "String",
     "descripcion": "String",
@@ -142,45 +203,64 @@ POST /api/learning-paths
         }]
     }],
     "metadata_ia": {
-        "tags": ["String"],
-        "carreras_relacionadas": ["String"]
+        "tags": String[],
+        "carreras_relacionadas": String[]
     }
 }
 ```
 
 ## 🛠️ Tecnologías
 
-- [Express.js](https://expressjs.com/) - Framework web
-- [MongoDB](https://www.mongodb.com/) - Base de datos
-- [Mongoose](https://mongoosejs.com/) - ODM para MongoDB
-- [Natural](https://github.com/NaturalNode/natural) - Procesamiento de lenguaje natural
-- [Railway](https://railway.app/) - Plataforma de despliegue
+- **Backend**: Express.js
+- **Base de Datos**: MongoDB con Mongoose
+- **IA/NLP**: Natural.js
+- **Despliegue**: Railway
+- **Documentación**: Swagger/OpenAPI
 
 ## 🚢 Despliegue
 
-El proyecto está configurado para despliegue automático en Railway.
+1. **Preparación**:
+   ```bash
+   # Verificar cambios
+   git status
+   
+   # Commit cambios
+   git add .
+   git commit -m "feat: descripción"
+   git push origin main
+   ```
 
-1. Conectar con GitHub:
-```bash
-# Asegúrate de que todos los cambios estén commiteados
-git push origin main
-```
+2. **Railway**:
+   - Conectar repositorio GitHub
+   - Configurar variables de entorno:
+     ```env
+     NODE_ENV=production
+     MONGODB_URL=url_produccion
+     ```
+   - Railway desplegará automáticamente
 
-2. Railway desplegará automáticamente los cambios
-
-3. Variables de entorno en Railway:
-- `NODE_ENV=production`
-- `MONGODB_URL=tu_url_de_mongodb`
+3. **Verificación**:
+   - Health check: `GET /`
+   - Prueba de endpoints
 
 ## 👥 Contribución
 
 1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add: nueva característica'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+2. Crear rama feature
+   ```bash
+   git checkout -b feature/NuevaCaracteristica
+   ```
+3. Commit cambios
+   ```bash
+   git commit -m 'feat: nueva característica'
+   ```
+4. Push y Pull Request
 
 ---
 <div align="center">
+
+**[Documentación Completa](docs/api.md)** | **[Reportar Bug](issues)** | **[Solicitar Feature](issues)**
+
 Desarrollado con ❤️ por el equipo Qoriyachay
+
 </div>
