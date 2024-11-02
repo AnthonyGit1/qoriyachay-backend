@@ -259,7 +259,7 @@ Request Body (POST):
 ---
 <div align="center">
 
-**[Documentación Completa](docs/api.md)** | **[Reportar Bug](issues)** | **[Solicitar Feature](issues)**
+**[Documentación Completa](https://github.com/JaciLucasEulogio/qori-yachay-frontend-/blob/main/docs/Documentación-Qoriyachay-Seedminds.pdf)**
 
 Desarrollado con ❤️ por el equipo Qoriyachay
 
